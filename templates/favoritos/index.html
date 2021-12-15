@@ -1,0 +1,47 @@
+{% extends "layout.html"%}
+{% block titulo %}
+Mis favoritos
+{% endblock %}
+{% block contenido %}
+<h2>Mis favoritos</h2>
+<div class="columns is-centered">
+    <div class="column">
+        <div class="box">
+            <div class="table-container">
+                <table class="table">
+                  <thead>
+                      <tr>
+                          <th>Id</th>
+                          <th>Libro</th>
+                          <th>Género</th>
+                          <th>Editorial</th>
+                          <th>Páginas</th>
+                          <th>Autor</th>
+                          <th>Opciones</th>
+                      </tr>
+                  </thead>
+                  <tbody id="contenidoFavoritos">
+                    
+                  </tbody>
+                </table>
+              </div>
+        </div>
+    </div>
+</div>
+<script>
+    async function cargarFavoritos() {
+        var parametros = {"key":"none"};
+        const result = await ajax(parametros,"cargarFavoritos");
+        $("#contenidoFavoritos").html(result);
+    }
+    async function eliminarFavorito(idFavorito) {
+        var parametros = {"idFavorito":idFavorito};
+        const result = await ajax(parametros,"eliminarFavorito");
+        notificar(result);
+        cargarFavoritos();
+    }
+    $(document).ready(function(){
+        cargarFavoritos();
+    });
+</script>
+{% endblock %}

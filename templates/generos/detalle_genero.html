@@ -1,0 +1,21 @@
+<form id="formularioModificarGenero">
+    <input type="hidden" value="{{genero.id_genero}}" name="idGenero" id="">
+    <div class="field">
+        <p class="control is-expanded">
+            <label for="">Nombre del género</label>
+            <input class="input" type="text" name="nombreGenero" placeholder="Ingrese el nombre del género" value="{{genero.nombre_genero}}" required>
+        </p>
+    </div>
+    <div class="field">
+        <p class="control is-expanded">
+            <input class="button is-success" type="submit" value="Agregar">
+        </p>
+    </div>
+</form>
+<script>
+    $("#formularioModificarGenero").on('submit',function(event){
+        event.preventDefault();
+        modificarGenero($(this).serialize());
+    });
+
+</script>

@@ -1,0 +1,124 @@
+{% extends "layout.html"%}
+{% block titulo %}
+Editoriales
+{% endblock %}
+{% block contenido %}
+<h2>Editoriales</h2>
+<div class="columns is-centered">
+    <div class="column">
+        <div class="box">
+            <div class="table-container">
+                <table class="table">
+                  <thead>
+                      <tr>
+                          <th>Id</th>
+                          <th>Nombre</th>
+                          <th>Opciones</th>
+                      </tr>
+                  </thead>
+                  <tbody id="contenidoEditoriales">
+    
+                  </tbody>
+                </table>
+              </div>
+        </div>
+    </div>
+</div>
+<div class="buttons">
+    <button class="button is-info" onclick="$('#modalNuevaEditorial').addClass('is-active');">Nueva editorial</button>
+</div>
+<div class="modal" id="modalNuevaEditorial">
+    <div class="modal-background" onclick="$('#modalNuevaEditorial').removeClass('is-active');"></div>
+    <div class="modal-content">
+        <div class="box">
+            <form id="formularioNuevaEditorial">
+                <div class="field">
+                    <p class="control is-expanded">
+                        <label for="">Nombre del género</label>
+                        <input class="input" type="text" name="nombreEditorial" placeholder="Ingrese el nombre de la editorial" required>
+                    </p>
+                </div>
+                <div class="field">
+                    <p class="control is-expanded">
+                        <input class="button is-success" type="submit" value="Agregar">
+                    </p>
+                </div>
+            </form>
+        </div>
+    </div>
+    <button class="modal-close is-large" aria-label="close" onclick="$('#modalNuevaEditorial').removeClass('is-active');"></button>
+</div>
+<div class="modal" id="modalDetalleEditorial">
+    <div class="modal-background" onclick="$('#modalDetalleEditorial').removeClass('is-active');"></div>
+    <div class="modal-content">
+        <div class="box" id="contenidoDetalleEditorial">
+            
+        </div>
+    </div>
+    <button class="modal-close is-large" aria-label="close" onclick="$('#modalDetalleEditorial').removeClass('is-active');"></button>
+</div>
+<div class="modal" id="modalConfirmarEliminar">
+    <div class="modal-background" onclick="$('#modalConfirmarEliminar').removeClass('is-active');"></div>
+    <div class="modal-content">
+        <div class="box">
+            <h6 style="color:red">Eliminar Editorial</h6>
+            <input type="hidden" id="idEditorialEliminar">
+            <p>¿Seguro deseas eliminar el editorial <text id="nombreEditorialEliminar"></text>?</p>
+            <button class="button is-danger" onclick="eliminarEditorial();">Eliminar</button>
+        </div>
+    </div>
+    <button class="modal-close is-large" aria-label="close" onclick="$('#modalConfirmarEliminar').removeClass('is-active');"></button>
+</div>
+<script>
+    async function cargarEditoriales() {
+        var parametros = {
+        "key":"none"
+        };
+        const result = await ajax(parametros,"cargarEditoriales");
+        $("#contenidoEditoriales").html(result);
+    }
+    async function cargarDetalleEditorial(idEditorial) {
+        var parametros = {
+        "idEditorial":idEditorial
+        };
+        const result = await ajax(parametros,"cargarDetalleEditorial");
+        $("#contenidoDetalleEditorial").html(result);
+    }
+
+    async function registrarEditorial() {
+        var parametros = $("#formularioNuevaEditorial").serialize();
+        const result = await ajax(parametros,"registrarEditorial");
+        notificar(result);
+        $("#formularioNuevaEditorial").trigger('reset');
+        $('#modalNuevaEditorial').removeClass('is-active');
+        cargarEditoriales();
+    }
+    async function modificarEditorial(datos) {
+        var parametros = datos;
+        const result = await ajax(parametros,"modificarEditorial");
+        notificar(result);
+        $('#modalDetalleEditorial').removeClass('is-active');
+        cargarEditoriales();
+    }
+
+    async function eliminarEditorial() {
+        var parametros ={"idEditorial":$("#idEditorialEliminar").val()};
+        const result = await ajax(parametros,"eliminarEditorial");
+        notificar(result);
+        $('#modalConfirmarEliminar').removeClass('is-active');
+        cargarEditoriales();
+    }
+    function preEliminar(idEditorial,nombreEditorial){
+        $("#idEditorialEliminar").val(idEditorial);
+        $("#nombreEditorialEliminar").html(nombreEditorial);
+        $("#modalConfirmarEliminar").addClass('is-active');
+    }
+    $(document).ready(function(){
+        cargarEditoriales();
+    });
+    $("#formularioNuevaEditorial").on('submit',function(event){
+        event.preventDefault();
+        registrarEditorial();
+    });
+</script>
+{% endblock %}

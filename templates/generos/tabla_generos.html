@@ -1,0 +1,10 @@
+{% for genero in generos %}
+    <tr>
+        <td>{{genero.id_genero}}</td>
+        <td>{{genero.nombre_genero}}</td>
+        <td>
+            <button class="button is-primary" onclick="cargarDetalleGenero('{{genero.id_genero}}');$('#modalDetalleGenero').addClass('is-active');">Editar</button>
+            <button class="button is-danger" onclick="preEliminar('{{genero.id_genero}}','{{genero.nombre_genero}}')">Eliminar</button>
+        </td>
+    </tr>
+{% endfor %}

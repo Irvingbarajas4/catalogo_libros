@@ -1,0 +1,138 @@
+{% extends "layout.html"%}
+{% block titulo %}
+Autores
+{% endblock %}
+{% block contenido %}
+<h2>Autores</h2>
+<div class="columns is-centered">
+    <div class="column">
+        <div class="box">
+            <div class="table-container">
+                <table class="table">
+                  <thead>
+                      <tr>
+                          <th>Id</th>
+                          <th>Autor</th>
+                          <th>Natalicio</th>
+                          <th>Nacionalidad</th>
+                          <th>Opciones</th>
+                      </tr>
+                  </thead>
+                  <tbody id="contenidoAutores">
+    
+                  </tbody>
+                </table>
+              </div>
+        </div>
+    </div>
+</div>
+
+<div class="buttons">
+    <button class="button is-info" onclick="$('#modalNuevoAutor').addClass('is-active');">Nuevo autor</button>
+</div>
+<div class="modal" id="modalNuevoAutor">
+    <div class="modal-background" onclick="$('#modalNuevoAutor').removeClass('is-active');"></div>
+    <div class="modal-content">
+        <div class="box">
+            <form id="formularioNuevoAutor">
+                <div class="field">
+                    <p class="control is-expanded">
+                        <label for="">Nombre del autor</label>
+                        <input class="input" type="text" name="nombreAutor" placeholder="Ingrese el Nombre del autor" required>
+                    </p>
+                </div>
+                <div class="field">
+                    <p class="control is-expanded">
+                        <label for="">Fecha de nacimiento</label>
+                        <input class="input" name="FeNac" type="date" placeholder="Fecha de nacimiento" required>
+                    </p>
+                </div>
+                <div class="field">
+                    <p class="control is-expanded">
+                        <label for="">Nacionalidad</label>
+                        <input class="input" type="text" name="nacionalidad" placeholder="Nacionalidad del autor" required>
+                    </p>
+                </div>
+                <div class="field">
+                    <p class="control is-expanded">
+                        <input class="button is-success" type="submit" value="Agregar" required>
+                    </p>
+                </div>
+            </form>
+        </div>
+    </div>
+    <button class="modal-close is-large" aria-label="close" onclick="$('#modalNuevoAutor').removeClass('is-active');"></button>
+</div>
+<div class="modal" id="modalDetalleAutor">
+    <div class="modal-background" onclick="$('#modalDetalleAutor').removeClass('is-active');"></div>
+    <div class="modal-content">
+        <div class="box" id="contenidoDetalleAutor">
+            
+        </div>
+    </div>
+    <button class="modal-close is-large" aria-label="close" onclick="$('#modalDetalleAutor').removeClass('is-active');"></button>
+</div>
+<div class="modal" id="modalConfirmarEliminar">
+    <div class="modal-background" onclick="$('#modalConfirmarEliminar').removeClass('is-active');"></div>
+    <div class="modal-content">
+        <div class="box">
+            <h6 style="color:red">Eliminar Autor</h6>
+            <input type="hidden" id="idAutorEliminar">
+            <p>¿Seguro deseas eliminar el autor <text id="nombeAutorEliminar"></text>?</p>
+            <button class="button is-danger" onclick="eliminarAutor();">Eliminar</button>
+        </div>
+    </div>
+    <button class="modal-close is-large" aria-label="close" onclick="$('#modalConfirmarEliminar').removeClass('is-active');"></button>
+</div>
+<script>
+    async function cargarAutores() {
+        var parametros = {
+        "key":"none"
+        };
+        const result = await ajax(parametros,"cargarAutores");
+        $("#contenidoAutores").html(result);
+    }
+    async function cargarDetalleAutor(idAutor) {
+        var parametros = {
+        "idAutor":idAutor
+        };
+        const result = await ajax(parametros,"cargarDetalleAutor");
+        $("#contenidoDetalleAutor").html(result);
+    }
+    async function registrarAutor() {
+        var parametros = $("#formularioNuevoAutor").serialize();
+        const result = await ajax(parametros,"registrarAutor");
+        notificar(result);
+        $("#formularioNuevoAutor").trigger('reset');
+        $('#modalNuevoAutor').removeClass('is-active');
+        cargarAutores();
+    }
+    async function modificarAutor(datos) {
+        var parametros = datos;
+        const result = await ajax(parametros,"modificarAutor");
+        notificar(result);
+        $('#modalDetalleAutor').removeClass('is-active');
+        cargarAutores();
+    }
+
+    async function eliminarAutor() {
+        var parametros ={"idAutor":$("#idAutorEliminar").val()};
+        const result = await ajax(parametros,"eliminarAutor");
+        notificar(result);
+        $('#modalConfirmarEliminar').removeClass('is-active');
+        cargarAutores();
+    }
+    function preEliminar(idAutor,nombreAutor){
+        $("#idAutorEliminar").val(idAutor);
+        $("#nombreAutorEliminar").html(nombreAutor);
+        $("#modalConfirmarEliminar").addClass('is-active');
+    }
+    $(document).ready(function(){
+        cargarAutores();
+    });
+    $("#formularioNuevoAutor").on('submit',function(event){
+        event.preventDefault();
+        registrarAutor();
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,211 @@
+{% extends "layout.html"%}
+{% block titulo %}
+Libros
+{% endblock %}
+{% block contenido %}
+<h2>Libros</h2>
+<div class="columns is-centered">
+    <div class="column">
+        <div class="box">
+            <div class="table-container">
+                <table class="table">
+                  <thead>
+                      <tr>
+                          <th>Id</th>
+                          <th>Titulo</th>
+                          <th>Género</th>
+                          <th>Editorial</th>
+                          <th>Páginas</th>
+                          <th>Autor</th>
+                          <th>Opciones</th>
+                      </tr>
+                  </thead>
+                  <tbody id="contenidoLibros"></tbody>
+                </table>
+              </div>
+        </div>
+    </div>
+</div>
+
+<div class="buttons">
+    <button class="button is-info" onclick="$('#modalNuevoLibro').addClass('is-active');cargarDatos();">Nuevo libro</button>
+</div>
+<div class="modal" id="modalNuevoLibro">
+    <div class="modal-background" onclick="$('#modalNuevoLibro').removeClass('is-active');"></div>
+    <div class="modal-content">
+        <div class="box">
+            <form id="formularioNuevoLibro">
+                <div class="columns">
+                    <div class="column">
+                        <div class="field">
+                            <p class="control is-expanded">
+                                <label for="">Nombre del Libro</label>
+                                <input class="input" type="text" name="nombreLibro" placeholder="Ingrese el Nombre del Libro" required>
+                            </p>
+                        </div>
+                        <div class="field">
+                            <p class="control is-expanded">
+                                <label for="">Cantidad de Paginas</label>
+                                <input class="input" name="numeroLibro" type="number" min="0" step="10" placeholder="Ingrese el numero de Paginas" required>
+                            </p>
+                        </div>
+                        <div class="field">
+                            <p class="control is-expanded">
+                                <label for="">Volumen</label>
+                                <input class="input" type="number" min="0" step="1" name="volumen" placeholder="Volumen de la edicion" required>
+                            </p>
+                        </div>
+                        <div class="field">
+                            <p class="control is-expanded">
+                                <label for="">Editorial</label>
+                                <select class="input" name="editorial" id="selectEditorialNuevoLibro" required>
+                                    
+                                </select>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="column">
+                        <div class="field">
+                            <p class="control is-expanded">
+                                <label for="">Fecha de Publicacion</label>
+                                <input class="input" type="date" name="fecha" placeholder="Fecha de Publicacion" required>
+                            </p>
+                        </div>
+                        <div class="field">
+                            <p class="control is-expanded">
+                                <label for="">Formato del Libro</label>
+                                <input class="input" type="text" name="formato" placeholder="Formato del Libro" required>
+                            </p>
+                        </div>
+                        <div class="field">
+                            <p class="control is-expanded">
+                                <label for="">Genero</label>
+                                <select class="input" name="genero" id="selectGeneroNuevoLibro" required>
+                                </select>
+                            </p>
+                        </div>
+                        <div class="field">
+                            <p class="control is-expanded">
+                                <label for="">Autor</label>
+                                <select class="input" name="autor" id="selectAutorNuevoLibro" required>
+                                    
+                                </select>
+                            </p>
+                        </div>
+                        <div class="field">
+                            <p class="control is-expanded">
+                                <input class="button is-success" type="submit" value="Agregar">
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <button class="modal-close is-large" aria-label="close" onclick="$('#modalNuevoLibro').removeClass('is-active');"></button>
+</div>
+<div class="modal" id="modalDetalleLibro">
+    <div class="modal-background" onclick="$('#modalDetalleLibro').removeClass('is-active');"></div>
+    <div class="modal-content">
+        <div class="box" id="contenidoDetalleLibro">
+        </div>
+    </div>
+    <button class="modal-close is-large" aria-label="close" onclick="$('#modalDetalleLibro').removeClass('is-active');"></button>
+</div>
+<div class="modal" id="modalConfirmarEliminar">
+    <div class="modal-background" onclick="$('#modalConfirmarEliminar').removeClass('is-active');"></div>
+    <div class="modal-content">
+        <div class="box">
+            <h6 style="color:red">Eliminar Libro</h6>
+            <input type="hidden" id="idLibroEliminar">
+            <p>¿Seguro deseas eliminar el libro <text id="tituloLibroEliminar"></text>?</p>
+            <button class="button is-danger" onclick="eliminarLibro();">Eliminar</button>
+        </div>
+    </div>
+    <button class="modal-close is-large" aria-label="close" onclick="$('#modalConfirmarEliminar').removeClass('is-active');"></button>
+</div>
+<script>
+    function cargarDatos(){
+        cargarAutoresNuevoLibro();
+        cargarGenerosNuevoLibro();
+        cargarEditorialesNuevoLibro();
+    }
+    async function cargarLibros() {
+        var parametros = {
+        "key":"none"
+        };
+        const result = await ajax(parametros,"cargarLibros");
+        $("#contenidoLibros").html(result);
+    }
+    async function cargarDetalleLibro(idLibro) {
+        var parametros = {
+        "idLibro":idLibro
+        };
+        const result = await ajax(parametros,"cargarDetalleLibro");
+        $("#contenidoDetalleLibro").html(result);
+    }
+    async function cargarAutoresNuevoLibro() {
+        var parametros = {
+        "key":"none"
+        };
+        const result = await ajax(parametros,"cargarAutoresNuevoLibro");
+        $("#selectAutorNuevoLibro").html(result);
+    }
+    async function cargarEditorialesNuevoLibro() {
+        var parametros = {
+        "key":"none"
+        };
+        const result = await ajax(parametros,"cargarEditorialesNuevoLibro");
+        $("#selectEditorialNuevoLibro").html(result);
+    }
+    async function cargarGenerosNuevoLibro() {
+        var parametros = {
+        "key":"none"
+        };
+        const result = await ajax(parametros,"cargarGenerosNuevoLibro");
+        $("#selectGeneroNuevoLibro").html(result);
+    }
+    async function eliminarLibro() {
+        var parametros ={"idLibro":$("#idLibroEliminar").val()};
+        const result = await ajax(parametros,"eliminarLibro");
+        notificar(result);
+        $('#modalConfirmarEliminar').removeClass('is-active');
+        cargarLibros();
+    }
+    async function agregarFavorito(idLibro) {
+        var parametros ={"idLibro":idLibro};
+        const result = await ajax(parametros,"agregarFavorito");
+        notificar(result);
+        cargarLibros();
+    }
+    function preEliminar(idLibro,tituloLibro){
+        $("#idLibroEliminar").val(idLibro);
+        $("#tituloLibroEliminar").html(tituloLibro);
+        $("#modalConfirmarEliminar").addClass('is-active');
+    }
+    $(document).ready(function(){
+        cargarLibros();
+    });
+    async function registrarLibro() {
+        var parametros = $("#formularioNuevoLibro").serialize();
+        const result = await ajax(parametros,"registrarLibro");
+        notificar(result);
+        $("#formularioNuevoLibro").trigger('reset');
+        $("#modalNuevoLibro").removeClass("is-active");
+        cargarLibros();
+    }
+    async function modificarLibro(datos) {
+        var parametros = datos;
+        const result = await ajax(parametros,"modificarLibro");
+        notificar(result);
+        $("#contenidoDetalleLibro").html("");
+        $("#modalDetalleLibro").removeClass("is-active");
+        cargarLibros();
+    }
+    $("#formularioNuevoLibro").on('submit',function(event){
+        event.preventDefault();
+        registrarLibro();
+    });
+</script>
+{% endblock %}

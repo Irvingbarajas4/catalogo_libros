@@ -1,0 +1,10 @@
+{% for editorial in editoriales %}
+    <tr>
+        <td>{{editorial.id_editorial}}</td>
+        <td>{{editorial.nombre_editorial}}</td>
+        <td>
+            <button class="button is-primary" onclick="cargarDetalleEditorial('{{editorial.id_editorial}}');$('#modalDetalleEditorial').addClass('is-active');">Editar</button>
+            <button class="button is-danger" onclick="preEliminar('{{editorial.id_editorial}}','{{editorial.nombre_editorial}}');">Eliminar</button>
+        </td>
+    </tr>
+{% endfor %}

@@ -1,0 +1,15 @@
+{% for libro in libros %}
+    {% if libro.id_usuario == usuario %}
+        <tr>
+            <td>{{libro.id_libro}}</td>
+            <td>{{libro.titulo_libro}}</td>
+            <td>{{libro.nombre_genero}}</td>
+            <td>{{libro.nombre_editorial}}</td>
+            <td>{{libro.numero_paginas}}</td>
+            <td>{{libro.nombre_autor}}</td>
+            <td>
+                <button class="button is-danger" onclick="eliminarFavorito('{{libro.id_lista_favoritos}}');">Eliminar</button>
+            </td>
+        </tr>
+    {% endif %}
+{% endfor %}

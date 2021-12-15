@@ -1,0 +1,20 @@
+<form id="formularioModificarEditorial">
+    <input type="hidden" name="idEditorial" value="{{editorial.id_editorial}}">
+    <div class="field">
+        <p class="control is-expanded">
+            <label for="">Nombre del género</label>
+            <input class="input" type="text" name="nombreEditorial" placeholder="Ingrese el nombre de la editorial" value="{{editorial.nombre_editorial}}" required>
+        </p>
+    </div>
+    <div class="field">
+        <p class="control is-expanded">
+            <input class="button is-success" type="submit" value="Agregar">
+        </p>
+    </div>
+</form>
+<script>
+    $("#formularioModificarEditorial").on("submit",function(event){
+        event.preventDefault();
+        modificarEditorial($(this).serialize());
+    });
+</script>

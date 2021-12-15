@@ -1,0 +1,15 @@
+{% for libro in libros %}
+    <tr>
+        <td>{{libro.id_libro}}</td>
+        <td>{{libro.titulo_libro}}</td>
+        <td>{{libro.nombre_genero}}</td>
+        <td>{{libro.nombre_editorial}}</td>
+        <td>{{libro.numero_paginas}}</td>
+        <td>{{libro.nombre_autor}}</td>
+        <td>
+            <button class="button is-primary" onclick="cargarDetalleLibro('{{libro.id_libro}}');$('#modalDetalleLibro').addClass('is-active');">Editar</button>
+            <button class="button is-danger" onclick="preEliminar('{{libro.id_libro}}','libro.titulo_libro');">Eliminar</button>
+            <button class="button is-success" onclick="agregarFavorito('{{libro.id_libro}}')">Favorito</button>
+        </td>
+    </tr>
+{% endfor %}

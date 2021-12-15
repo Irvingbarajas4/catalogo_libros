@@ -1,0 +1,94 @@
+<form id="formularioModificarLibro">
+    <input type="hidden" name="idlibro" value="{{libro.id_libro}}">
+    <div class="columns">
+        <div class="column">
+            <div class="field">
+                <p class="control is-expanded">
+                    <label for="">Nombre del Libro</label>
+                    <input class="input" type="text" name="nombreLibro" placeholder="Ingrese el Nombre del Libro" value="{{libro.titulo_libro}}" required>
+                </p>
+            </div>
+            <div class="field">
+                <p class="control is-expanded">
+                    <label for="">Cantidad de Paginas</label>
+                    <input class="input" name="numeroLibro" type="number" min="0" step="10" placeholder="Ingrese el numero de Paginas" value="{{libro.numero_paginas}}" required>
+                </p>
+            </div>
+            <div class="field">
+                <p class="control is-expanded">
+                    <label for="">Volumen</label>
+                    <input class="input" type="number" min="0" step="1" name="volumen" placeholder="Volumen de la edicion" value="{{libro.volumen}}" required>
+                </p>
+            </div>
+            <div class="field">
+                <p class="control is-expanded">
+                    <label for="">Editorial</label>
+                    <select class="input" name="editorial" required>
+                        {% for editorial in editoriales %}
+                            <option value="{{editorial.id_editorial}}" 
+                            {% if editorial.id_editorial == libro.id_editorial %}
+                                selected
+                            {% endif %}
+                            
+                            >{{editorial.nombre_editorial}}</option>
+                        {% endfor %}
+                    </select>
+                </p>
+            </div>
+        </div>
+
+        <div class="column">
+            <div class="field">
+                <p class="control is-expanded">
+                    <label for="">Fecha de Publicacion</label>
+                    <input class="input" type="date" name="fecha" placeholder="Fecha de Publicacion" value="{{libro.fecha_publicacion}}" required>
+                </p>
+            </div>
+            <div class="field">
+                <p class="control is-expanded">
+                    <label for="">Formato del Libro</label>
+                    <input class="input" type="text" name="formato" placeholder="Formato del Libro" value="{{libro.formato}}" required>
+                </p>
+            </div>
+            <div class="field">
+                <p class="control is-expanded">
+                    <label for="">Genero</label>
+                    <select class="input" name="genero" required>
+                        {% for genero in generos %}
+                            <option value="{{genero.id_genero}}"
+                            {% if genero.id_genero == libro.id_genero %}
+                                selected
+                            {% endif %}
+                            >{{genero.nombre_genero}}</option>
+                        {% endfor %}
+                    </select>
+                </p>
+            </div>
+            <div class="field">
+                <p class="control is-expanded">
+                    <label for="">Autor</label>
+                    <select class="input" name="autor" required>
+                        {% for autor in autores %}
+                            <option value="{{autor.id_autor}}"
+                                {% if autor.id_autor == libro.id_autor %}
+                                    selected
+                                {% endif %}
+                            >{{autor.nombre_autor}}</option>
+                        {% endfor %}
+                    </select>
+                </p>
+            </div>
+            <div class="field">
+                <p class="control is-expanded">
+                    <input class="button is-success" type="submit" value="Guardar">
+                </p>
+            </div>
+        </div>
+    </div>
+</form>
+<script>
+    $("#formularioModificarLibro").on('submit',function(event){
+        event.preventDefault();
+        modificarLibro($(this).serialize());
+    });
+</script>

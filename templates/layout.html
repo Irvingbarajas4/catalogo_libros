@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block titulo%}Libros{% endblock %}</title>
+    <link rel="shortcut icon" href="../images/fav_icon.png" type="image/x-icon">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- Bulma Version 0.9.0-->
+    <link rel="stylesheet" href="https://unpkg.com/bulma@0.9.0/css/bulma.min.css" />
+    <style type="text/css">
+        html,
+        body {
+            font-family: 'Open Sans';
+        }
+
+        img {
+            padding: 5px;
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <nav class="navbar" role="navigation" aria-label="main navigation">
+            <div class="navbar-brand">
+              <a class="navbar-item" href="favoritos">
+                <img src="static/images/dynamic.png" width="100">
+              </a>
+          
+              <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+              </a>
+            </div>
+          
+            <div id="navbarBasicExample" class="navbar-menu">
+              <div class="navbar-start">
+                <a class="navbar-item" href="favoritos">
+                  Favoritos
+                </a>
+          
+                <a class="navbar-item" href="libros">
+                  Libros
+                </a>
+                <div class="navbar-item has-dropdown is-hoverable">
+                  <a class="navbar-link">
+                    Más
+                  </a>
+          
+                  <div class="navbar-dropdown">
+                    <a class="navbar-item" href="autores">
+                      Autores
+                    </a>
+                    <a class="navbar-item" href="generos">
+                      Géneros
+                    </a>
+                    <a class="navbar-item" href="editoriales">
+                      Editoriales
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </nav>
+          <div id="contenidoNotificaciones">
+
+          </div>
+          {% block contenido %}
+
+          {% endblock %}
+    </div>
+    <script>
+        function ajax(parametros,ruta){
+            return new Promise(resolve => {
+                $.ajax({
+                    url: ruta,
+                    data: parametros,
+                    method: "POST",
+                    beforeSend:function(){
+                    $("body").css("cursor", "progress");
+                    },
+                    success: function(response) {
+                    resolve(response);
+                    $("body").css("cursor", "default");
+                    },
+                    error: function() {
+                    alert('Revise su conexión a internet');
+                    resolve(false);
+                    $("body").css("cursor", "default");
+                    }
+                });
+            });
+        }
+        timerNotify=null;
+        function notificar(contenido){
+          clearTimeout(timerNotify);
+          $("#contenidoNotificaciones").html("");
+          $("#contenidoNotificaciones").append('<div class="notification is-primary"><button class="delete"></button>'+contenido+'</div>');
+          timerNotify=setTimeout(function(){
+            $("#contenidoNotificaciones").html("");
+          },3000);
+        }
+    </script>
+</body>
+
+</html>

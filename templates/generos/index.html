@@ -1,0 +1,123 @@
+{% extends "layout.html"%}
+{% block titulo %}
+Géneros
+{% endblock %}
+{% block contenido %}
+<h2>Géneros</h2>
+<div class="columns is-centered">
+    <div class="column">
+        <div class="box">
+            <div class="table-container">
+                <table class="table">
+                  <thead>
+                      <tr>
+                          <th>Id</th>
+                          <th>Nombre</th>
+                          <th>Opciones</th>
+                      </tr>
+                  </thead>
+                  <tbody id="contenidoGeneros">
+    
+                  </tbody>
+                </table>
+              </div>
+        </div>
+    </div>
+</div>
+<div class="buttons">
+    <button class="button is-info" onclick="$('#modalNuevoGenero').addClass('is-active');">Nuevo género</button>
+</div>
+<div class="modal" id="modalNuevoGenero">
+    <div class="modal-background" onclick="$('#modalNuevoGenero').removeClass('is-active');"></div>
+    <div class="modal-content">
+        <div class="box">
+            <form id="formularioNuevoGenero">
+                <div class="field">
+                    <p class="control is-expanded">
+                        <label for="">Nombre del género</label>
+                        <input class="input" type="text" name="nombreGenero" placeholder="Ingrese el nombre del género" required>
+                    </p>
+                </div>
+                <div class="field">
+                    <p class="control is-expanded">
+                        <input class="button is-success" type="submit" value="Agregar">
+                    </p>
+                </div>
+            </form>
+        </div>
+    </div>
+    <button class="modal-close is-large" aria-label="close" onclick="$('#modalNuevoGenero').removeClass('is-active');"></button>
+</div>
+<div class="modal" id="modalDetalleGenero">
+    <div class="modal-background" onclick="$('#modalDetalleGenero').removeClass('is-active');"></div>
+    <div class="modal-content">
+        <div class="box" id="contenidoDetalleGenero">
+            
+        </div>
+    </div>
+    <button class="modal-close is-large" aria-label="close" onclick="$('#modalDetalleGenero').removeClass('is-active');"></button>
+</div>
+<div class="modal" id="modalConfirmarEliminar">
+    <div class="modal-background" onclick="$('#modalConfirmarEliminar').removeClass('is-active');"></div>
+    <div class="modal-content">
+        <div class="box">
+            <h6 style="color:red">Eliminar Género</h6>
+            <input type="hidden" id="idGeneroEliminar">
+            <p>¿Seguro deseas eliminar el género <text id="nombreGeneroEliminar"></text>?</p>
+            <button class="button is-danger" onclick="eliminarGenero();">Eliminar</button>
+        </div>
+    </div>
+    <button class="modal-close is-large" aria-label="close" onclick="$('#modalConfirmarEliminar').removeClass('is-active');"></button>
+</div>
+<script>
+    async function cargarGeneros() {
+        var parametros = {
+        "key":"none"
+        };
+        const result = await ajax(parametros,"cargarGeneros");
+        $("#contenidoGeneros").html(result);
+    }
+    async function cargarDetalleGenero(idGenero) {
+        var parametros = {
+        "idGenero":idGenero
+        };
+        const result = await ajax(parametros,"cargarDetalleGenero");
+        $("#contenidoDetalleGenero").html(result);
+    }
+
+    async function registrarGenero() {
+        var parametros = $("#formularioNuevoGenero").serialize();
+        const result = await ajax(parametros,"registrarGenero");
+        notificar(result);
+        $("#formularioNuevoGenero").trigger('reset');
+        $('#modalNuevoGenero').removeClass('is-active');
+        cargarGeneros();
+    }
+    async function modificarGenero(datos) {
+        var parametros =datos;
+        const result = await ajax(parametros,"modificarGenero");
+        notificar(result);
+        $('#modalDetalleGenero').removeClass('is-active');
+        cargarGeneros();
+    }
+    async function eliminarGenero() {
+        var parametros ={"idGenero":$("#idGeneroEliminar").val()};
+        const result = await ajax(parametros,"eliminarGenero");
+        notificar(result);
+        $('#modalConfirmarEliminar').removeClass('is-active');
+        cargarGeneros();
+    }
+    function preEliminar(idGenero,nombreGenero){
+        $("#idGeneroEliminar").val(idGenero);
+        $("#nombreGeneroEliminar").html(nombreGenero);
+        $("#modalConfirmarEliminar").addClass('is-active');
+    }
+    $(document).ready(function(){
+        cargarGeneros();
+    });
+    $("#formularioNuevoGenero").on('submit',function(event){
+        event.preventDefault();
+        registrarGenero();
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,32 @@
+<form id="formularioModificarAutor">
+    <input type="hidden" name="idAutor" value="{{autor.id_autor}}">
+    <div class="field">
+        <p class="control is-expanded">
+            <label for="">Nombre del autor</label>
+            <input class="input" type="text" name="nombreAutor" placeholder="Ingrese el Nombre del autor" value="{{autor.nombre_autor}}" required>
+        </p>
+    </div>
+    <div class="field">
+        <p class="control is-expanded">
+            <label for="">Fecha de nacimiento</label>
+            <input class="input" name="fechaNacimiento" type="date" placeholder="Fecha de nacimiento" value="{{autor.fecha_nac}}" required>
+        </p>
+    </div>
+    <div class="field">
+        <p class="control is-expanded">
+            <label for="">Nacionalidad</label>
+            <input class="input" type="text" name="nacionalidad" placeholder="Nacionalidad del autor" value="{{autor.nacionalidad}}" required>
+        </p>
+    </div>
+    <div class="field">
+        <p class="control is-expanded">
+            <input class="button is-success" type="submit" value="Agregar" required>
+        </p>
+    </div>
+</form>
+<script>
+    $("#formularioModificarAutor").on('submit',function(event){
+        event.preventDefault();
+        modificarAutor($(this).serialize());
+    });
+</script>

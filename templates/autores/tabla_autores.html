@@ -1,0 +1,12 @@
+{% for autor in autores %}
+    <tr>
+        <td>{{autor.id_autor}}</td>
+        <td>{{autor.nombre_autor}}</td>
+        <td>{{autor.fecha_nac}}</td>
+        <td>{{autor.nacionalidad}}</td>
+        <td>
+            <button class="button is-primary" onclick="cargarDetalleAutor('{{autor.id_autor}}');$('#modalDetalleAutor').addClass('is-active');">Editar</button>
+            <button class="button is-danger" onclick="preEliminar('{{autor.id_autor}}','autor.nombre_autor');">Eliminar</button>
+        </td>
+    </tr>
+{% endfor %}
