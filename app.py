@@ -176,7 +176,7 @@ def registrarLibro():
 def cargarAutoresNuevoLibro():
     autorConsulta = Autor.query.all()
     return render_template("libros/select_autor.html", autores = autorConsulta)
-    
+
 @app.route("/cargarGenerosNuevoLibro",methods=['POST'])
 def cargarGenerosNuevoLibro():
     generoConsulta = Genero.query.all()
@@ -248,7 +248,7 @@ def registrarAutor():
     db.session.add(autor)
     db.session.commit()
     return "Autor registrado con éxito"
-    
+
 @app.route("/cargarDetalleAutor",methods=['POST'])
 def cargarDetalleAutor():
     ID = request.form["idAutor"]
@@ -382,7 +382,7 @@ def registrar_usuario():
     usuario = Usuarios(email = email, password=password_cifrado)
     db.session.add(usuario)
     db.session.commit()
-    redirect("/")
+    return redirect("/")
 
 #termina registro usuarios
 
@@ -390,4 +390,3 @@ def registrar_usuario():
 if __name__ == '__main__':
     db.create_all()
     app.run();
-    
