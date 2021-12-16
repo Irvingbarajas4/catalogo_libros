@@ -374,8 +374,8 @@ def eliminarEditorial():
 def registrar():
     return render_template("registro.html");
 
-@app.route("/registrar_usuario", methods=['POST'])
-def registrar_usuario():
+@app.route("/registrarUsuario", methods=['POST'])
+def registrarUsuario():
     email = request.form["email"]
     password = request.form["password"]
     password_cifrado = bcryp.generate_password_hash(password).decode('utf-8')
